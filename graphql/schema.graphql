@@ -1,0 +1,156 @@
+ type Query {
+    findFriends(input: FindFriendsInput): [friendsOutput!]
+    findFriendsOfFriendsQuery(input: FindFriendsOfFriendsInput): [friendsOfFriendsOutput!]
+    topRatedSpecificCuisineRestaurantsNearme(input: topRatedSpecificCuisineRestaurantsNearmeInput ):[topRatedSpecificCuisineRestaurantsNearmeOutput!]
+    topRestaurantsNearMe (input : topRestaurantsNearMeInput): [topRestaurantsNearMeOutput!]
+  restaurantLatestReviews(input : restaurantLatestReviewsInput): [restaurantLatestReviewsOutput!]
+  restaurantsFriendsRecommend(input: restaurantsFriendsRecommendInput): [restaurantsFriendsRecommendOutput!]
+  restaurantsFriendsRecommendReviewRating(input: restaurantsFriendsRecommendReviewRatingInput): [restaurantsFriendsRecommendReviewRatingOutput!]
+  restaurantsFriendsReviewedinPastDays(input :restaurantsFriendsReviewedinPastDaysInput):[restaurantsFriendsReviewedinPastDaysOutput!]
+    }
+
+
+
+
+
+type restaurantsFriendsReviewedinPastDaysOutput {
+  area: [String]
+  name: [String]
+}
+
+input restaurantsFriendsReviewedinPastDaysInput{
+  username: String
+  pastDays: Int
+}
+
+
+
+
+type restaurantsFriendsRecommendReviewRatingOutput {
+  area: [String]
+  name: [String]
+}
+
+input restaurantsFriendsRecommendReviewRatingInput{
+  username: String
+}
+
+
+type restaurantsFriendsRecommendOutput {
+  area: [String]
+  name: [String]
+}
+
+input restaurantsFriendsRecommendInput{
+  username: String
+}
+
+
+type restaurantLatestReviewsOutput{
+review: [String]
+user: String
+}
+
+
+
+input restaurantLatestReviewsInput{
+  name:String
+}
+
+type topRestaurantsNearMeOutput{
+   restaurant: String
+rating: Int
+}
+
+input topRestaurantsNearMeInput{
+  area:String
+}
+
+type topRatedSpecificCuisineRestaurantsNearmeOutput{
+ restaurant: String
+rating: Int
+}
+
+
+input topRatedSpecificCuisineRestaurantsNearmeInput{
+  cuisineName: String
+  area: String
+}
+
+type friendsOutput{
+  area: [String]
+  name: [String]
+  email: [String]
+  username: [String]
+}
+
+type friendsOfFriendsOutput{
+  friends: String
+  friends_friends: String
+  
+}
+
+ input FindFriendsOfFriendsInput{
+   username: String
+ }
+
+  input FindFriendsInput{
+      username:String
+  }
+
+  enum LIKE_DISLIKE {
+  like
+  dislike
+}
+
+  input PersonInput{
+      name:String
+      email: String
+      username: String
+      area: String
+  }
+
+    input RestaurantInput{
+      name:String
+      area: String
+  }
+
+  input ReviewInput{
+    text:String
+    restaurantName:String
+     username:String
+     rating:Int
+  }
+
+  input ReviewRatingInput{
+username:String,
+reviewId:String
+like_dislike: LIKE_DISLIKE
+  }
+
+  input CuisineInput{
+      cuisineName: String
+  }
+
+input AddCuisineToRestaurantInput{
+    cuisineName: String
+    restaurantName: String
+}
+
+input AddFriendInput{
+username: String
+friendUsername: String
+
+}
+   type Mutation{
+      createPerson(input: PersonInput):String
+      createRestaurant(input: RestaurantInput):String
+      createReview(input: ReviewInput):String
+      reviewRating(input: ReviewRatingInput):String
+      createCuisine(input: CuisineInput):String
+      addCuisineToRestaurant(input: AddCuisineToRestaurantInput):String
+      addFriend(input: AddFriendInput):String
+  }
+  
+ 
+
