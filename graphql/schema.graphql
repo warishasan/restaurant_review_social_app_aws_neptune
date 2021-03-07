@@ -7,11 +7,30 @@
   restaurantsFriendsRecommend(input: restaurantsFriendsRecommendInput): [restaurantsFriendsRecommendOutput!]
   restaurantsFriendsRecommendReviewRating(input: restaurantsFriendsRecommendReviewRatingInput): [restaurantsFriendsRecommendReviewRatingOutput!]
   restaurantsFriendsReviewedinPastDays(input :restaurantsFriendsReviewedinPastDaysInput):[restaurantsFriendsReviewedinPastDaysOutput!]
+  getAllCuisines:[String]
+  getAllRestaurants:[getAllRestaurantsOutput!]
+  getRestaurantInfo(input: getRestaurantInfoInput):[getRestaurantInfoOutput!]
+  getReviewsLikesDislikes(input: getReviewsLikesDislikesInput): String
     }
 
 
+input getReviewsLikesDislikesInput{
+  restaurantName: String
+}
 
+type getRestaurantInfoOutput{
+restaurant: [String]
+serves: [String]
+}
 
+input getRestaurantInfoInput{
+  name:String
+}
+
+type getAllRestaurantsOutput{
+  area: [String]
+  name: [String]
+}
 
 type restaurantsFriendsReviewedinPastDaysOutput {
   area: [String]
@@ -47,10 +66,17 @@ input restaurantsFriendsRecommendInput{
 
 
 type restaurantLatestReviewsOutput{
-review: [String]
+review: [reviews]
 user: String
 }
 
+
+type reviews{
+  timeStamp: [String]
+  rating : [String]
+  text: [String]
+  id: [String]
+}
 
 
 input restaurantLatestReviewsInput{
@@ -59,7 +85,7 @@ input restaurantLatestReviewsInput{
 
 type topRestaurantsNearMeOutput{
    restaurant: String
-rating: Int
+rating: Float
 }
 
 input topRestaurantsNearMeInput{
@@ -68,7 +94,7 @@ input topRestaurantsNearMeInput{
 
 type topRatedSpecificCuisineRestaurantsNearmeOutput{
  restaurant: String
-rating: Int
+rating: Float
 }
 
 
@@ -85,8 +111,8 @@ type friendsOutput{
 }
 
 type friendsOfFriendsOutput{
-  friends: String
-  friends_friends: String
+  friends: [String]
+  friends_friends: [String]
   
 }
 

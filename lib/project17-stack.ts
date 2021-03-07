@@ -26,8 +26,8 @@ export class Project17Stack extends cdk.Stack {
         email: true
       },
       standardAttributes: {
-        fullname: {
-          required: true,
+        nickname: {
+          required: false,
           mutable: true,
         },
         address:{
@@ -48,7 +48,6 @@ export class Project17Stack extends cdk.Stack {
     new cdk.CfnOutput(this, "UserPoolClientId", {
       value: userPoolClient.userPoolClientId,
     })
-
 
 
 
@@ -136,20 +135,28 @@ export class Project17Stack extends cdk.Stack {
     const api = new appsync.GraphqlApi(this, "project17API", {
       name: "project17API",
       schema: appsync.Schema.fromAsset("graphql/schema.graphql"),
-      authorizationConfig: {
-        defaultAuthorization: {
-          authorizationType: appsync.AuthorizationType.USER_POOL,
-          userPoolConfig: {
-            userPool,
-          },
-        },
-      },
     })
 
     new cdk.CfnOutput(this, "GraphQLAPIURL", {
       value: api.graphqlUrl,
     })
   
+    
+
+    
+
+    userPool.addTrigger(cognito.UserPoolOperation.PRE_SIGN_UP, new lambda.Function(this, 'signupTrigger', {
+      runtime: lambda.Runtime.NODEJS_10_X,
+    handler: 'preSignup.handler',
+    code: new lambda.AssetCode("lambda"),
+    environment: {
+      API_KEY: api.apiKey!,
+      API_URL: api.graphqlUrl
+    },
+  }));
+
+
+
 
     const lambda_data_source = api.addLambdaDataSource("lamdaDataSource", handler);
 
@@ -234,7 +241,30 @@ export class Project17Stack extends cdk.Stack {
     })
     
     
+    lambda_data_source.createResolver({
+      typeName: "Query",
+      fieldName: "getAllCuisines"
+    })
     
+    lambda_data_source.createResolver({
+      typeName: "Query",
+      fieldName: "getAllRestaurants"
+    })
+    
+    
+    lambda_data_source.createResolver({
+      typeName: "Query",
+      fieldName: "getRestaurantInfo"
+    })
+    
+    lambda_data_source.createResolver({
+      typeName: "Query",
+      fieldName: "getReviewsLikesDislikes"
+    })
+    
+
+    
+        
     
   }
 }
